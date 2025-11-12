@@ -15,11 +15,12 @@ public class WeatherManager : MonoBehaviour
         StartCoroutine(GetWeatherXML(OnXMLDataLoaded));
     }
 
-    private IEnumerator CallAPI(string url, Action<string> callback)
+    private IEnumerator CallAPI(Action<string> callback)
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(url))
+        using (UnityWebRequest request = UnityWebRequest.Get(xmlApi))
         {
             yield return request.SendWebRequest();
+
             if (request.result == UnityWebRequest.Result.ConnectionError)
             {
                 Debug.LogError($"network problem: {request.error}");
@@ -39,6 +40,7 @@ public class WeatherManager : MonoBehaviour
     {
         return CallAPI(xmlApi, callback);
     }
+
     public void OnXMLDataLoaded(string data)
     {
         Debug.Log(data);
